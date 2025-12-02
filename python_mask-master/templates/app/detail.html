@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load app_tag %}
+
+{% block content %}
+<div id="wrapper">
+    <div class="detail-container" style="max-width: 800px; margin: 20px auto; padding: 20px; background: #fff; border: 1px solid #e4e4e4;">
+        <h1 class="product-title" style="font-size: 24px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">
+            {{ product.title }}
+        </h1>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">类型:</label>
+            <span>{% if product.type == 0 %}出售{% else %}求购{% endif %}</span>
+        </div>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">联系人:</label>
+            <span>{{ product.contact }}</span>
+        </div>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">联系电话:</label>
+            <span>{{ product.phone }}</span>
+        </div>
+        
+        {% if product.weixin %}
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">微信:</label>
+            <span>{{ product.weixin }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">位置:</label>
+            <span>{{ product.location }}</span>
+        </div>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">有效期:</label>
+            <span>{{ product.expire }} 天</span>
+        </div>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">发布时间:</label>
+            <span>{{ product.timestamp|time_since }}</span>
+        </div>
+        
+        <div class="product-info" style="margin-bottom: 15px;">
+            <label style="font-weight: bold; color: #666; width: 100px; display: inline-block;">浏览量:</label>
+            <span>{{ product.pv }}</span>
+        </div>
+        
+        <a href="{% url 'home' %}" class="back-link" style="display: inline-block; margin-top: 20px; color: #1e0fbe; text-decoration: none;">返回首页</a>
+    </div>
+</div>
+{% endblock content %}

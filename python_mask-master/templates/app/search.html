@@ -1,0 +1,70 @@
+<!-- templates/app/search.html -->
+{% extends 'base/base.html' %}
+{% load static %}
+{% load app_tag %}
+
+{% block content %}
+
+<div id="wrapper">
+    <div class="top-bar">
+        <span class="first"><a href="/">首页</a></span>
+        <span class="top_fav">
+            <a href="{% url 'app:commit' %}" target="_blank">提交信息</a>
+        </span>
+    </div>
+    
+    <div class="header-div">
+        <form class="search-form" action="{% url 'app:search' %}" method="get" role="form">
+            <a href="/" title="二手商品交易平台" class="fl">
+                <img src="{% static 'img/logo.png' %}" alt="二手商品交易平台" class="nav-logo">
+            </a>
+            <input type="text" id="search" title="Search" value="{{ q }}"
+                   autocomplete="off" name="q" placeholder="搜搜你懂的" class="fl mt25">
+            <input style="line-height:32px;" type="submit" id="btnSearch" value="搜 索" class=" blue fl mt25">
+        </form>
+    </div>
+
+    <div id="content">
+        <div id="wall">
+            <div class="search-statu">
+                <span>搜索 "{{ q }}" 的结果</span>
+            </div>
+            <div class="row">
+                <div class="search-list col-md-8">
+                    {% for item in product_list %}
+                    <div class="search-item">
+                        <div class="item-title">
+                            <h3>
+                                <a href="{% url 'app:detail' item.pk %}">
+                                    {{ item.title }}
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="item-bar">
+                            <span class="cpill {% if item.type == 0 %}blue-pill{% else %}yellow-pill{% endif %}">
+                                {% if item.type == 0 %}供应{% else %}需求{% endif %}
+                            </span>
+                            <span>创建时间：<b>{{ item.timestamp|time_since }}</b></span>
+                            <span>位置：<b>{{ item.location }}</b></span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <h3>暂无搜索结果</h3>
+                    {% endfor %}
+
+                    {% include "base/page_nav.html" %}
+                    
+                    <div style="height:50px;"></div>
+                </div>
+                
+                <div class="search-tips col-md-2">
+                    <div class="search-notice">
+                        本站主要用于演示软件项目，不以盈利为目的。本站没有储存任何数据，亦不对结果承担任何责任！
+                        如发现非法、侵权的内容请在线举报，谢谢合作！<br>客服邮箱：net936@163.com
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
