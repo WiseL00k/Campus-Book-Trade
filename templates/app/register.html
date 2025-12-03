@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div id="wrapper" style="max-width: 500px; margin: 50px auto;">
+    <h3 class="res-title">用户注册</h3>
+    <form class="ui large form" method="post" action="{% url 'app:register' %}">
+        {% csrf_token %}  <!-- 必须添加，防止CSRF攻击 -->
+
+        <!-- 用户名 -->
+        <div class="field">
+            <label>用户名</label>
+            {{ form.username.errors }}  <!-- 显示用户名错误信息 -->
+            <input type="text"
+                   name="{{ form.username.name }}"
+                   placeholder="请输入用户名（至少3个字符）"
+                   value="{{ form.username.value|default:'' }}"
+                   required>
+        </div>
+
+        <!-- 邮箱（可选） -->
+        <div class="field">
+            <label>邮箱（可选）</label>
+            {{ form.email.errorsors }}
+            <input type="email"
+                   name="{{ form.email.name }}"
+                   placeholder="请输入邮箱（选填）"
+                   value="{{ form.email.value|default:'' }}">
+        </div>
+
+        <!-- 密码1 -->
+        <div class="field">
+            <label>密码</label>
+            {{ form.password1.errorsors }}
+            <input type="password"
+                   name="{{ form.password1.name }}"
+                   placeholder="请输入密码（至少8位，不能全是数字）"
+                   required>
+        </div>
+
+        <!-- 密码2（确认密码） -->
+        <div class="field">
+            <label>确认密码</label>
+            {{ form.password2.errors }}
+            <input type="password"
+                   name="{{ form.password2.name }}"
+                   placeholder="请再次输入密码"
+                   required>
+        </div>
+
+        <!-- 提交和返回按钮 -->
+        <button class="ui primary button" type="submit">注册</button>
+        <a href="{% url 'app:login' %}" class="ui secondary button">返回登录</a>
+
+        <!-- 显示表单全局错误（如密码不匹配） -->
+        {% if form.non_field_errors %}
+            <div class="ui negative message">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- 显示成功/错误提示信息 -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="ui {% if message.tags == 'success' %}positive{% else %}negative{% endif %} message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

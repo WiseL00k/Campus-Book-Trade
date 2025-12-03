@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div id="wrapper" style="max-width: 500px; margin: 50px auto;">
+    <h3 class="res-title">用户登录</h3>
+    <form class="ui large form" method="post" action="{% url 'app:login' %}">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>用户名</label>
+            {{ form.username.errors }}
+            <input type="text" name="{{ form.username.name }}" placeholder="请输入用户名" required>
+        </div>
+
+        <div class="field">
+            <label>密码</label>
+            {{ form.password.errors }}
+            <input type="password" name="{{ form.password.name }}" placeholder="请输入密码" required>
+        </div>
+
+        <!-- 登录和返回按钮 -->
+        <button class="ui primary button" type="submit">登录</button>
+        <a href="{% url 'app:commit' %}" class="ui secondary button">返回</a>
+
+        <!-- 新增：注册入口链接（放在按钮下方，间距15px） -->
+        <div style="margin-top: 15px;">
+            还没有账号？<a href="{% url 'app:register' %}" style="color: #2185d0; text-decoration: underline;">点击注册</a>
+        </div>
+
+        <!-- 错误和消息提示（保持不变） -->
+        {% include "base/form_errors.html" %}
+        {% include "base/form_messages.html" %}
+    </form>
+</div>
+{% endblock %}
