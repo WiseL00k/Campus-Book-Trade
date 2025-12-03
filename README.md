@@ -144,6 +144,7 @@ class Product(models.Model):
     expire = models.IntegerField(default=1)
 ```
 
+
 ### 业务编写
 
 本项目一共分为3个页面，分别是列表页、详情页、提交页。
