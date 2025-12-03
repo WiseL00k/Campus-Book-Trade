@@ -107,3 +107,10 @@ STATICFILES_DIRS = [
 
 # 消除主键警告
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
+
+# 登录URL配置（未登录时访问受保护页面会重定向到这里）
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'  # 登录成功后跳转首页
+LOGOUT_REDIRECT_URL = '/'  # 登出后跳转首页

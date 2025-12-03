@@ -1,11 +1,14 @@
 from django.contrib import messages
-from django.shortcuts import render
-
-# Create your views here.
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth.views import LoginView, LogoutView
 from ratelimit.decorators import ratelimit
-from app.forms import CommitForm
+
+from app.forms import CommitForm, RegisterForm
 from app.models import Product
 from helpers import get_page_list
 
@@ -17,8 +20,9 @@ class IndexView(generic.ListView):
     paginate_by = 15
     c = None
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(IndexView, self).get_context_data(**kwargs)
+    # 修复第24行：参数定义去掉多余的逗号，使用标准语法
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(IndexView, self).get_context_data(object_list=object_list,** kwargs)
         paginator = context.get('paginator')
         page = context.get('page_obj')
         page_list = get_page_list(paginator, page)
@@ -37,18 +41,19 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Product
     template_name = 'app/detail.html'
+    context_object_name = 'product'  # 补充：明确模板变量名
 
     def get_object(self, queryset=None):
         obj = super().get_object()
         return obj
 
     def get_context_data(self, **kwargs):
-        context = super(DetailView, self).get_context_data(**kwargs)
+        context = super(DetailView, self).get_context_data(** kwargs)
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class CommitView(generic.CreateView):
-
     model = Product
     form_class = CommitForm
     template_name = 'app/commit.html'
@@ -66,6 +71,27 @@ class CommitView(generic.CreateView):
         return reverse('app:commit')
 
 
+class CustomLoginView(LoginView):
+    template_name = 'app/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse('home')
+
+
+class CustomLogoutView(LogoutView):
+    next_page = 'home'
+
+
+class RegisterView(generic.FormView):
+    template_name = 'app/register.html'
+    form_class = RegisterForm
+    success_url = '/app/login/'
+
+    def form_valid(self, form):
+        user = form.save()
+        messages.success(self.request, "注册成功，请登录！")
+        return super().form_valid(form)
 
 class SearchView(generic.ListView):
     model = Product

@@ -1,8 +1,58 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% load app_tag %}
 
 {% block content %}
+<div id="wrapper" class="ui container" style="margin-top: 30px; max-width: 800px;">
+    <!-- 商品标题 -->
+    <h2 class="ui header" style="margin-bottom: 20px;">
+        {{ product.title|default:"未命名商品" }}
+        <div class="sub header">
+            {% if product.type == 0 %}
+                <span class="ui green label">供应</span>
+            {% else %}
+                <span class="ui orange label">求购</span>
+            {% endif %}
+            发布时间：{{ product.timestamp|date:"Y年m月d日 H:i"|default:"未知时间" }}
+        </div>
+    </h2>
+
+    <!-- 商品详情卡片 -->
+    <div class="ui segment" style="padding: 20px;">
+        <div class="ui list">
+            <div class="item">
+                <div class="header" style="min-width: 100px; display: inline-block;">联系人</div>
+                <div class="content">{{ product.contact|default:"未填写" }}</div>
+            </div>
+            <div class="item">
+                <div class="header" style="min-width: 100px; display: inline-block;">地点</div>
+                <div class="content">{{ product.location|default:"未填写" }}</div>
+            </div>
+            <div class="item">
+                <div class="header" style="min-width: 100px; display: inline-block;">电话</div>
+                <div class="content">{{ product.phone|default:"未填写" }}</div>
+            </div>
+            <div class="item">
+                <div class="header" style="min-width: 100px; display: inline-block;">微信</div>
+                <div class="content">{{ product.weixin|default:"未填写" }}</div>
+            </div>
+            <div class="item">
+                <div class="header" style="min-width: 100px; display: inline-block;">状态</div>
+                <div class="content">
+                    {% if product.status %}
+                        <span class="ui green text">已审核</span>
+                    {% else %}
+                        <span class="ui gray text">待审核</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div style="margin-top: 20px;">
+        <a href="{% url 'home' %}" class="ui secondary button">
+            <i class="arrow left icon"></i> 返回列表
+        </a>
 <div id="wrapper">
     <div class="detail-container" style="max-width: 800px; margin: 20px auto; padding: 20px; background: #fff; border: 1px solid #e4e4e4;">
         <h1 class="product-title" style="font-size: 24px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">

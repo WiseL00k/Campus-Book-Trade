@@ -1,12 +1,27 @@
 {% load static %}
 
-<div class="ui sticky fixed  menu">
+<div class="ui sticky fixed menu">
     <div class="ui container">
         <a href="/" class="borderless header item">
             <img class="logo" src="{% static 'img/logo.png' %}">
             二手商品交易平台
         </a>
         <div class="v-header-extra">
+            <!-- 搜索框保持不变 -->
+            <div class="ui small icon input v-video-search">
+                <input class="prompt" value="{{ q }}" type="text" placeholder="搜索" id="v-search">
+                <i id="search" class="search icon" style="cursor:pointer;"></i>
+            </div>
+
+            <!-- 登录/登出及发布按钮（根据登录状态动态显示） -->
+            {% if user.is_authenticated %}
+                <span class="ui tiny text" style="margin-right: 10px;">欢迎，{{ user.username }}</span>
+                <a class="ui tiny secondary basic button" href="{% url 'app:logout' %}">登出</a>
+                <a class="ui tiny primary basic button" href="{% url 'app:commit' %}">发布</a>
+            {% else %}
+                <a class="ui tiny secondary basic button" href="{% url 'app:login' %}">登录</a>
+                <a class="ui tiny primary basic button" href="{% url 'app:login' %}">发布（需登录）</a>
+            {% endif %}
             <form class="ui small icon input v-video-search" method="GET" action="{% url 'app:search' %}">
                 <input class="prompt" value="{{ q }}" type="text" placeholder="搜索" name="q" id="v-search">
                 <i class="search icon" style="cursor:pointer;" onclick="this.parentNode.submit()"></i>
