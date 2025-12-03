@@ -7,13 +7,19 @@
             二手商品交易平台
         </a>
         <div class="v-header-extra">
-            <!-- 搜索框保持不变 -->
-            <div class="ui small icon input v-video-search">
-                <input class="prompt" value="{{ q }}" type="text" placeholder="搜索" id="v-search">
-                <i id="search" class="search icon" style="cursor:pointer;"></i>
-            </div>
+            <!-- 搜索框：仅添加form标签和必要属性，保留所有原始样式 -->
+            <form action="{% url 'home' %}" method="get" style="display: inline-block;">
+                <div class="ui small icon input v-video-search">
+                    <!-- 新增name="q"用于传递搜索关键词，保留原有value和placeholder -->
+                    <input class="prompt" name="q" value="{{ q }}" type="text" placeholder="搜索" id="v-search">
+                    <!-- 搜索图标改为提交按钮，样式不变 -->
+                    <button type="submit" style="border: none; background: transparent; padding: 0; margin: 0;">
+                        <i id="search" class="search icon" style="cursor:pointer;"></i>
+                    </button>
+                </div>
+            </form>
 
-            <!-- 登录/登出及发布按钮（根据登录状态动态显示） -->
+            <!-- 登录/登出及发布按钮：完全保留你的原始代码，未做任何修改 -->
             {% if user.is_authenticated %}
                 <span class="ui tiny text" style="margin-right: 10px;">欢迎，{{ user.username }}</span>
                 <a class="ui tiny secondary basic button" href="{% url 'app:logout' %}">登出</a>
